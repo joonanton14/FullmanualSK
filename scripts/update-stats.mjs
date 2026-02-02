@@ -5,7 +5,7 @@ import * as cheerio from "cheerio";
 const CLUB_ID = "420295";
 const SQUAD_URL = `https://proclubshead.com/26/club-squad/gen5-${CLUB_ID}/`;
 const BASE = "https://proclubshead.com";
-
+//node scripts/update-stats.mjs to refresh stats and then push to github
 function pickNumberNear(label, text) {
   const re = new RegExp(
     label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + `[\\s\\S]{0,120}?(\\d+(?:\\.\\d+)?)`,
