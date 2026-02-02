@@ -32,6 +32,14 @@ export default function Page() {
   const [loading, setLoading] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
 
+  async function logout() {
+  try {
+    await fetch("/api/logout", { method: "POST" });
+  } finally {
+    // go to login page after clearing cookie
+    window.location.href = "/login";
+  }
+  }
   useEffect(() => {
     let alive = true;
     setLoading(true);
@@ -96,6 +104,9 @@ export default function Page() {
                   className={styles.search}
                 />
               </div>
+              <button className={styles.logoutButton} onClick={logout}>
+                Logout
+              </button>
             </div>
           </div>
         </div>
