@@ -152,7 +152,17 @@ export default function Page() {
                     <span className={styles.muted}>{p.games} games</span>
                   </div>
 
-                  <div className={styles.playerName}>{p.name}</div>
+                  <div className={styles.playerLine}>
+  <div className={styles.playerName}>{p.name}</div>
+
+  {idx !== 0 && (
+    <img
+      src="/gifs/screamingbeaver.gif"
+      alt="Screaming beaver"
+      className={styles.beaverBig}
+    />
+  )}
+</div>
 
                   <div className={styles.topCardBottom}>
                     <div>
