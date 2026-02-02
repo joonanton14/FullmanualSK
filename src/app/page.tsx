@@ -9,31 +9,38 @@ type Row = {
   assists: number;
   ga: number;
   gaPerMatch: number;
+  source?: string;
+};
+
+type Payload = {
+  updatedAt: string;
+  rows: Row[];
 };
 
 export default function Page() {
   const [rows, setRows] = useState<Row[]>([]);
+  const [updatedAt, setUpdatedAt] = useState<string>("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setError("");
-    // Count ALL games: minGames=0
-    fetch("/api/ga-per-match?minGames=0")
+    fetch("/stats.json", { cache: "no-store" })
       .then(async (r) => {
-        if (!r.ok) {
-          const text = await r.text().catch(() => "");
-          throw new Error(`API ${r.status}: ${text.slice(0, 200)}`);
-        }
-        return r.json();
+        if (!r.ok) throw new Error(`stats.json ${r.status}`);
+        const data: Payload = await r.json();
+        setRows(data.rows ?? []);
+        setUpdatedAt(data.updatedAt ?? "");
       })
-      .then((data) => setRows(data.rows ?? []))
       .catch((e) => setError(String(e)));
   }, []);
 
   return (
     <main style={{ padding: 24, fontFamily: "system-ui" }}>
       <h1 style={{ fontSize: 28, marginBottom: 6 }}>Full manual SK</h1>
-      <p style={{ marginTop: 0, opacity: 0.8 }}>G+A per match leaderboard</p>
+      <p style={{ marginTop: 0, opacity: 0.8 }}>
+        G+A per match leaderboard
+        {updatedAt ? ` • Updated: ${new Date(updatedAt).toLocaleString()}` : ""}
+      </p>
 
       {error ? (
         <pre style={{ color: "crimson", marginTop: 12 }}>{error}</pre>

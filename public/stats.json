@@ -1,0 +1,41 @@
+{
+  "updatedAt": "2026-02-02T13:14:24.646Z",
+  "rows": [
+    {
+      "name": "kilkutin",
+      "games": 442,
+      "goals": 545,
+      "assists": 395,
+      "ga": 940,
+      "gaPerMatch": 2.1266968325791855,
+      "source": "https://proclubshead.com/26/club-player/gen5-420295-kilkutin/"
+    },
+    {
+      "name": "perttikeinonen69",
+      "games": 468,
+      "goals": 493,
+      "assists": 502,
+      "ga": 995,
+      "gaPerMatch": 2.126068376068376,
+      "source": "https://proclubshead.com/26/club-player/gen5-420295-perttikeinonen69/"
+    },
+    {
+      "name": "docwet14",
+      "games": 136,
+      "goals": 90,
+      "assists": 100,
+      "ga": 190,
+      "gaPerMatch": 1.3970588235294117,
+      "source": "https://proclubshead.com/26/club-player/gen5-420295-docwet14/"
+    },
+    {
+      "name": "Olberr10",
+      "games": 3,
+      "goals": 1,
+      "assists": 2,
+      "ga": 3,
+      "gaPerMatch": 1,
+      "source": "https://proclubshead.com/26/club-player/gen5-420295-Olberr10/"
+    }
+  ]
+}
