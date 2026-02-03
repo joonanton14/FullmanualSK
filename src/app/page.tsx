@@ -176,7 +176,7 @@ console.log("Sound button clicked");
       }}
       className={styles.soundButton}
     >
-    {soundOn ? "🔊 Sound: ON" : "🔇 Sound: OFF"}
+    {soundOn ? "Sound: ON" : "Sound: OFF"}
 
     {showSoundHint ? <span className={styles.newBadge}>NEW</span> : null}
     </button>
@@ -292,7 +292,7 @@ console.log("Sound button clicked");
                     <th className={styles.num}>G0als</th>
                     <th className={styles.num}>Assists</th>
                     <th className={styles.num}>G+A</th>
-                    <th className={styles.num}>Pörssit per peli</th>
+                    <th className={styles.num}>PPP</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -321,7 +321,7 @@ console.log("Sound button clicked");
                   ) : (
                     <tr>
                       <td colSpan={6} className={styles.emptyRow}>
-                        N0 players match y0ur search.
+                        N0 players match your search.
                       </td>
                     </tr>
                   )}

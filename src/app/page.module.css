@@ -488,4 +488,77 @@
   border-color: rgba(148, 163, 184, 0.45);
 }
 
+.headerRight {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.searchWrap {
+  width: min(320px, 70vw);
+}
+
+@media (max-width: 640px) {
+  
+  .headerRight {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .searchWrap {
+    width: 100%;
+  }
+
+  .soundHintWrap,
+  .linkButton,
+  .soundButton,
+  .logoutButton {
+    flex: 1 1 auto;
+  }
+
+  .linkButton,
+  .soundButton,
+  .logoutButton {
+    width: auto;
+  }
+   .table {
+    min-width: 0;          /* allow it to shrink */
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 8px;      /* tighter padding */
+  }
+
+  /* Narrow numeric columns */
+  .table th:nth-child(2),
+  .table td:nth-child(2) {
+    width: 50px;           /* Games */
+  }
+
+  .table th:last-child,
+  .table td:last-child {
+    width: 60px;           /* Pörssit per peli */
+  }
+
+  /* Player column can shrink + ellipsis */
+  .table th:first-child,
+  .table td:first-child {
+    width: 35%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Make sure the wrapper does NOT force horizontal scroll */
+  .tableScroll {
+    overflow-x: hidden;
+  }
+}
+
+
+
 
