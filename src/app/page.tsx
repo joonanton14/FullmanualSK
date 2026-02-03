@@ -289,8 +289,8 @@ console.log("Sound button clicked");
                   <tr>
                     <th>Player</th>
                     <th className={styles.num}>Games</th>
-                    <th className={styles.num}>G0als</th>
-                    <th className={styles.num}>Assists</th>
+                    <th className={styles.num}>G</th>
+                    <th className={styles.num}>A</th>
                     <th className={styles.num}>G+A</th>
                     <th className={styles.num}>PPP</th>
                   </tr>

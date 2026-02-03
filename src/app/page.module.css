@@ -524,27 +524,25 @@
     width: auto;
   }
    .table {
-    min-width: 0;          /* allow it to shrink */
+    min-width: 0;
     font-size: 12px;
   }
 
   .table th,
   .table td {
-    padding: 8px 8px;      /* tighter padding */
+    padding: 8px 8px;
   }
 
-  /* Narrow numeric columns */
   .table th:nth-child(2),
   .table td:nth-child(2) {
-    width: 50px;           /* Games */
+    width: 50px;
   }
 
   .table th:last-child,
   .table td:last-child {
-    width: 60px;           /* Pörssit per peli */
+    width: 60px;
   }
 
-  /* Player column can shrink + ellipsis */
   .table th:first-child,
   .table td:first-child {
     width: 35%;
@@ -553,7 +551,6 @@
     white-space: nowrap;
   }
 
-  /* Make sure the wrapper does NOT force horizontal scroll */
   .tableScroll {
     overflow-x: hidden;
   }
