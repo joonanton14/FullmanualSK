@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./page.module.css";
 
 type Row = {
@@ -26,20 +26,28 @@ function fmtDate(iso?: string) {
 }
 
 export default function Page() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const intervalRef = useRef<number | null>(null);
+  const [soundOn, setSoundOn] = useState(false);
+  const [soundError, setSoundError] = useState("");
   const [rows, setRows] = useState<Row[]>([]);
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
+  const [showSoundHint, setShowSoundHint] = useState(false);
 
-  async function logout() {
-  try {
-    await fetch("/api/logout", { method: "POST" });
-  } finally {
-    // go to login page after clearing cookie
-    window.location.href = "/login";
+  useEffect(() => {
+  // show hint only once per browser/device
+  const seen = localStorage.getItem("seenSoundHint");
+  if (!seen) setShowSoundHint(true);
+  }, []);
+
+  function dismissSoundHint() {
+  localStorage.setItem("seenSoundHint", "1");
+  setShowSoundHint(false);
   }
-  }
+
   useEffect(() => {
     let alive = true;
     setLoading(true);
@@ -69,6 +77,61 @@ export default function Page() {
     };
   }, []);
 
+async function toggleSound() {
+    setSoundError("");
+console.log("Sound button clicked");
+
+    // Turn OFF
+    if (soundOn) {
+      setSoundOn(false);
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    // Turn ON (must play from user gesture click)
+   try {
+    if (!audioRef.current) {
+      const a = new Audio("/sounds/scary-scream-401725.mp3");
+      a.preload = "auto";
+      a.volume = 0.8;
+      a.load(); // prime it
+      audioRef.current = a;
+    }
+
+    const a = audioRef.current!;
+    a.pause();
+    a.currentTime = 0;
+
+    // tiny delay helps some browsers
+    await new Promise((r) => setTimeout(r, 50));
+
+    await a.play();
+
+    setSoundOn(true);
+
+    intervalRef.current = window.setInterval(() => {
+    const aa = audioRef.current;
+    if (!aa) return;
+    aa.currentTime = 0;
+    aa.play().catch(() => {});
+    }, 14000);
+    } catch (e: any) {
+    console.log(e);
+    setSoundError(`${e?.name}: ${e?.message || "blocked"}`);
+    }
+  }
+
+  async function logout() {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      window.location.href = "/login";
+    }
+  }
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
@@ -92,7 +155,6 @@ export default function Page() {
           <div className={styles.headerRow}>
             <div>
               <h1 className={styles.title}>Full manual SK</h1>
-            
             </div>
 
             <div className={styles.headerRight}>
@@ -104,13 +166,44 @@ export default function Page() {
                   className={styles.search}
                 />
               </div>
-              <button className={styles.logoutButton} onClick={logout}>
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+
+              <div className={styles.soundHintWrap}>
+    <button
+      type="button"
+      onClick={async () => {
+      if (showSoundHint) dismissSoundHint();
+      await toggleSound();
+      }}
+      className={styles.soundButton}
+    >
+    {soundOn ? "🔊 Sound: ON" : "🔇 Sound: OFF"}
+
+    {showSoundHint ? <span className={styles.newBadge}>NEW</span> : null}
+    </button>
+
+    {showSoundHint ? (
+    <div className={styles.soundPopover} role="dialog" aria-label="New feature">
+      <div className={styles.soundPopoverTitle}>New: Scream butt0n</div>
+      <div className={styles.soundPopoverText}>
+        Click <b>S0und</b> t0 enable the scream every 14 seconds 😈
+      </div>
+
+      <div className={styles.soundPopoverActions}>
+        <button className={styles.soundPopoverOk} onClick={dismissSoundHint}>
+          G0t it
+        </button>
+      </div>
+      </div>
+        ) : null}
+      </div>
+
+      <button type="button" className={styles.logoutButton} onClick={logout}>
+        L0g 0ut
+      </button>
+      </div>
+      </div>
+      </div>
+    </header>
 
       <main className={styles.container}>
         {error ? (
@@ -122,8 +215,8 @@ export default function Page() {
 
         <section className={styles.cardsGrid}>
           <StatCard title="Players" value={String(filtered.length)} loading={loading} />
-          <StatCard title="Total games" value={String(totals.games)} loading={loading} />
-          <StatCard title="Total G+A" value={String(totals.ga)} loading={loading} />
+          <StatCard title="T0tal games" value={String(totals.games)} loading={loading} />
+          <StatCard title="T0tal G+A" value={String(totals.ga)} loading={loading} />
           <StatCard
             title="Avg G+A / match"
             value={totals.games > 0 ? (totals.ga / totals.games).toFixed(4) : "0.0000"}
@@ -133,8 +226,7 @@ export default function Page() {
 
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Top performers</h2>
-            <span className={styles.sectionHint}></span>
+            <h2 className={styles.sectionTitle}>T0p perf0rmers</h2>
           </div>
 
           <div className={styles.topGrid}>
@@ -148,38 +240,38 @@ export default function Page() {
               top3.map((p, idx) => (
                 <div key={p.name} className={styles.topCard}>
                   <div className={styles.topCardRow}>
-                    <span className={styles.rank}>#{idx + 1}</span>
+                    <span className={styles.rank}>{idx + 1}</span>
                     <span className={styles.muted}>{p.games} games</span>
                   </div>
 
                   <div className={styles.playerLine}>
-  <div className={styles.playerName}>{p.name}</div>
+                    <div className={styles.playerName}>{p.name}</div>
 
-  {idx !== 0 && (
-    <img
-      src="/gifs/screamingbeaver.gif"
-      alt="Screaming beaver"
-      className={styles.beaverBig}
-    />
-  )}
-</div>
+                    {idx !== 0 && (
+                      <img
+                        src="/gifs/screamingbeaver.gif"
+                        alt="Screaming beaver"
+                        className={styles.beaverBig}
+                      />
+                    )}
+                  </div>
 
                   <div className={styles.topCardBottom}>
                     <div>
-                      <div className={styles.muted}>G+A / match</div>
+                      <div className={styles.muted}>P0ints average</div>
                       <div className={styles.bigNumber}>{p.gaPerMatch.toFixed(4)}</div>
                     </div>
                     <div className={styles.right}>
                       <div className={styles.mutedMono}>
                         {p.goals}G + {p.assists}A
                       </div>
-                      <div className={styles.mutedMono}>{p.ga} total</div>
+                      <div className={styles.mutedMono}>{p.ga} t0tal</div>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className={styles.emptyBox}>No players match your search.</div>
+              <div className={styles.emptyBox}>N0 players match y0ur search.</div>
             )}
           </div>
         </section>
@@ -187,7 +279,7 @@ export default function Page() {
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>All players</h2>
-            <span className={styles.sectionHint}>Showing {filtered.length}</span>
+            <span className={styles.sectionHint}></span>
           </div>
 
           <div className={styles.tableWrap}>
@@ -197,17 +289,17 @@ export default function Page() {
                   <tr>
                     <th>Player</th>
                     <th className={styles.num}>Games</th>
-                    <th className={styles.num}>Goals</th>
+                    <th className={styles.num}>G0als</th>
                     <th className={styles.num}>Assists</th>
                     <th className={styles.num}>G+A</th>
-                    <th className={styles.num}>G+A / Match</th>
+                    <th className={styles.num}>Pörssit per peli</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
                     Array.from({ length: 8 }).map((_, i) => (
                       <tr key={i}>
-                        <td className={styles.loadingCell}>Loading…</td>
+                        <td className={styles.loadingCell}>L0ading…</td>
                         <td className={styles.numMuted}>—</td>
                         <td className={styles.numMuted}>—</td>
                         <td className={styles.numMuted}>—</td>
@@ -229,7 +321,7 @@ export default function Page() {
                   ) : (
                     <tr>
                       <td colSpan={6} className={styles.emptyRow}>
-                        No players match your search.
+                        N0 players match y0ur search.
                       </td>
                     </tr>
                   )}

@@ -58,28 +58,12 @@ export default function LoginPage() {
         }}
       >
         <div style={{ padding: 6 }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "6px 10px",
-              borderRadius: 999,
-              border: "1px solid rgba(148, 163, 184, 0.18)",
-              background: "rgba(15, 23, 42, 0.35)",
-              color: "rgba(226, 232, 240, 0.8)",
-              fontSize: 12,
-            }}
-          >
-            🔒 Team access
-          </div>
-
           <h1 style={{ margin: "14px 0 6px 0", fontSize: 26, fontWeight: 750, letterSpacing: "-0.02em" }}>
             Full manual SK
           </h1>
 
           <p style={{ margin: 0, color: "rgba(226, 232, 240, 0.75)", fontSize: 13, lineHeight: 1.5 }}>
-            Enter the team password to view the leaderboard.
+            Enter the team passw0rd t0 view the leaderboard.
           </p>
 
           <div style={{ marginTop: 16 }}>
@@ -91,7 +75,7 @@ export default function LoginPage() {
                 marginBottom: 8,
               }}
             >
-              Password
+              Passw0rd
             </label>
 
             <input
@@ -153,7 +137,6 @@ export default function LoginPage() {
           </button>
 
           <div style={{ marginTop: 12, fontSize: 12, color: "rgba(148, 163, 184, 0.85)" }}>
-            Tip: after login, you’ll stay signed in for 7 days (unless you clear cookies).
           </div>
         </div>
       </main>

@@ -185,7 +185,7 @@
 }
 
 .rank {
-  font-size: 12px;
+  font-size: 24px;
   color: rgba(226, 232, 240, 0.7);
 }
 
@@ -232,12 +232,17 @@
   width: 100%;
   min-width: 740px;
   border-collapse: collapse;
-  font-size: 13px;
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .table thead th {
-  text-align: left;
-  padding: 12px 14px;
   background: rgba(15, 23, 42, 0.6);
   border-bottom: 1px solid rgba(148, 163, 184, 0.14);
   color: rgba(226, 232, 240, 0.85);
@@ -245,8 +250,24 @@
 }
 
 .table tbody td {
-  padding: 12px 14px;
   border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.table th.num,
+.table td.num,
+.num,
+.numMono,
+.numMuted,
+.numStrong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table tbody tr:hover td {
@@ -378,4 +399,93 @@
   background: rgba(15, 23, 42, 0.35);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
 }
+
+.soundButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.55);
+  padding: 10px 12px;
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.soundButton:hover {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.soundHintWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.newBadge {
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(99, 102, 241, 0.22);
+  color: rgba(241, 245, 249, 0.95);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.85; }
+}
+
+.soundPopover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 260px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.92);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+  padding: 12px;
+  z-index: 50;
+}
+
+.soundPopoverTitle {
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(241, 245, 249, 0.95);
+}
+
+.soundPopoverText {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.soundPopoverActions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.soundPopoverOk {
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(99, 102, 241, 0.22);
+  padding: 8px 10px;
+  color: rgba(241, 245, 249, 0.95);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.soundPopoverOk:hover {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
 
