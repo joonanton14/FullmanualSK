@@ -63,7 +63,7 @@ export default function LoginPage() {
           </h1>
 
           <p style={{ margin: 0, color: "rgba(226, 232, 240, 0.75)", fontSize: 13, lineHeight: 1.5 }}>
-            Enter the team passw0rd t0 view the leaderboard.
+            Enter the team passw0rd t0 view the leaderb0ard.
           </p>
 
           <div style={{ marginTop: 16 }}>

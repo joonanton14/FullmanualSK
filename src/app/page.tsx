@@ -36,8 +36,221 @@ export default function Page() {
   const [loading, setLoading] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
   const [showSoundHint, setShowSoundHint] = useState(false);
+  const [gameOpen, setGameOpen] = useState(false);
+  const launcherRef = useRef<HTMLButtonElement | null>(null);
+
+function FourteenGame({
+  open,
+  onClose,
+  anchorRef,
+}: {
+  open: boolean;
+  onClose: () => void;
+  anchorRef: React.RefObject<HTMLElement | null>;
+}) {
+  const [pos, setPos] = useState<{ left: number; top: number }>({ left: 16, top: 84 });
+  const [display, setDisplay] = useState("0");
+  const [tape, setTape] = useState<string[]>([]);
+  const [justSolved, setJustSolved] = useState(false);
 
   useEffect(() => {
+    if (open) {
+      setDisplay("0");
+      setTape([]);
+      setJustSolved(false);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    function updatePos() {
+      const el = anchorRef.current;
+      if (!el) return;
+
+      const r = el.getBoundingClientRect();
+
+      const panelW = 320;
+      const margin = 8;
+
+      let left = r.left;
+      let top = r.bottom + margin;
+
+      left = Math.min(left, window.innerWidth - panelW - 10);
+      left = Math.max(10, left);
+
+      const panelH = 360;
+      const maxTop = window.innerHeight - panelH - 10;
+      top = Math.min(top, Math.max(10, maxTop));
+
+      setPos({ left, top });
+    }
+
+    if (!open) return;
+
+    updatePos();
+    window.addEventListener("resize", updatePos);
+    window.addEventListener("scroll", updatePos, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePos);
+      window.removeEventListener("scroll", updatePos, true);
+    };
+  }, [open, anchorRef]);
+
+  // Helpers (looks like a calculator, but "=" always returns 14)
+  function append(ch: string) {
+    setJustSolved(false);
+    setDisplay((prev) => {
+      const next = justSolved ? ch : prev === "0" ? ch : prev + ch;
+      return next.length > 18 ? prev : next;
+    });
+  }
+
+  function op(ch: string) {
+    setJustSolved(false);
+    setDisplay((prev) => {
+      const last = prev.slice(-1);
+      const ops = ["+", "−", "×", "÷"];
+      if (ops.includes(last)) return prev.slice(0, -1) + ch;
+      const next = prev + ch;
+      return next.length > 18 ? prev : next;
+    });
+  }
+
+  function dot() {
+    setJustSolved(false);
+    setDisplay((prev) => {
+      const parts = prev.split(/[+\−×÷]/);
+      const lastPart = parts[parts.length - 1];
+      if (lastPart.includes(".")) return prev;
+      return prev + ".";
+    });
+  }
+
+  function backspace() {
+    setJustSolved(false);
+    setDisplay((prev) => (prev.length <= 1 ? "0" : prev.slice(0, -1)));
+  }
+
+  function clearAll() {
+    setDisplay("0");
+    setTape([]);
+    setJustSolved(false);
+  }
+
+  function equals() {
+    setTape((prev) => {
+      const line = display;
+      const merged = [...prev, line, "=", "14"];
+      return merged.slice(-9);
+    });
+    setDisplay("14");
+    setJustSolved(true);
+  }
+
+  if (!open) return null;
+
+  return (
+    <>
+      <div
+        className={styles.gamePanel}
+        style={{ left: pos.left, top: pos.top }}
+        role="dialog"
+        aria-label="Calculator"
+      >
+        <div className={styles.gameHeader}>
+          <div className={styles.gameTitle}>
+            🧮 Calculat0r14
+          </div>
+          <button className={styles.gameClose} onClick={onClose} type="button" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div className={styles.calcBody}>
+          <div className={styles.calcTop}>
+            <div
+              className={`${styles.calcDisplay} ${justSolved ? styles.calcDisplayPop : ""}`}
+              aria-label="Display"
+            >
+              {display}
+            </div>
+          </div>
+
+          <div className={styles.calcGrid}>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnAction}`} onClick={clearAll}>
+              AC
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnAction}`} onClick={backspace}>
+              ⌫
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnOp}`} onClick={() => op("÷")}>
+              ÷
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnOp}`} onClick={() => op("×")}>
+              ×
+            </button>
+
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("7")}>
+              7
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("8")}>
+              8
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("9")}>
+              9
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnOp}`} onClick={() => op("−")}>
+              −
+            </button>
+
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("4")}>
+              4
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("5")}>
+              5
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("6")}>
+              6
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnOp}`} onClick={() => op("+")}>
+              +
+            </button>
+
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("1")}>
+              1
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("2")}>
+              2
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={() => append("3")}>
+              3
+            </button>
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnEqual}`} onClick={equals}>
+              =
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.calcBtn} ${styles.calcBtnNum} ${styles.calcBtnZero}`}
+              onClick={() => append("0")}
+            >
+              0
+            </button>
+
+            <button type="button" className={`${styles.calcBtn} ${styles.calcBtnNum}`} onClick={dot}>
+              .
+            </button>
+          </div>
+        </div>
+      </div>
+      <button className={styles.gameOverlay} onClick={onClose} aria-label="Close overlay" />
+    </>
+  );
+}
+
+
+
+useEffect(() => {
   // show hint only once per browser/device
   const seen = localStorage.getItem("seenSoundHint");
   if (!seen) setShowSoundHint(true);
@@ -150,11 +363,29 @@ console.log("Sound button clicked");
 
   return (
     <div className={styles.page}>
+      {gameOpen ? (
+  <FourteenGame
+    anchorRef={launcherRef}
+    open={gameOpen}
+    onClose={() => setGameOpen(false)}
+  />
+) : null}
       <header className={styles.header}>
         <div className={styles.container}>
           <div className={styles.headerRow}>
             <div>
               <h1 className={styles.title}>Full manual SK</h1>
+              <button
+                ref={launcherRef}
+  type="button"
+  className={styles.gameLauncher}
+  onClick={() => setGameOpen(true)}
+  aria-label="Open Test me"
+>
+  <span className={styles.gameIcon}>🧮</span>
+  <span className={styles.gameText}>Calculat0r14</span>
+</button>
+
             </div>
 
             <div className={styles.headerRight}>
