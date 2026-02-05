@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-03T08:25:50.350Z",
+  "updatedAt": "2026-02-05T11:52:32.063Z",
   "rows": [
     {
       "name": "kilkutin",
@@ -8,7 +8,7 @@
       "assists": 395,
       "ga": 940,
       "gaPerMatch": 2.1266968325791855,
-      "source": "https://proclubshead.com/26/club-player/gen5-420295-kilkutin/"
+      "source": "ea-paste"
     },
     {
       "name": "perttikeinonen69",
@@ -17,7 +17,7 @@
       "assists": 502,
       "ga": 995,
       "gaPerMatch": 2.126068376068376,
-      "source": "https://proclubshead.com/26/club-player/gen5-420295-perttikeinonen69/"
+      "source": "ea-paste"
     },
     {
       "name": "docwet14",
@@ -26,7 +26,7 @@
       "assists": 100,
       "ga": 190,
       "gaPerMatch": 1.3970588235294117,
-      "source": "https://proclubshead.com/26/club-player/gen5-420295-docwet14/"
+      "source": "ea-paste"
     },
     {
       "name": "Olberr10",
@@ -35,7 +35,7 @@
       "assists": 2,
       "ga": 3,
       "gaPerMatch": 1,
-      "source": "https://proclubshead.com/26/club-player/gen5-420295-Olberr10/"
+      "source": "ea-paste"
     }
   ]
 }
