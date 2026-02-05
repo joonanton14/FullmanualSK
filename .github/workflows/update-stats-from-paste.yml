@@ -1,0 +1,47 @@
+name: Update stats.json (paste EA JSON)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ea_json:
+        description: "Paste the full EA JSON (from /api/fc/members/stats...)"
+        required: true
+        default: ""
+      note:
+        description: "Optional note for commit message"
+        required: false
+        default: "manual paste"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build public/stats.json from pasted JSON
+        env:
+          EA_JSON: ${{ inputs.ea_json }}
+          NOTE: ${{ inputs.note }}
+        run: node scripts/update-stats-from-input.mjs
+
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/stats.json
+          git commit -m "Update stats.json (${NOTE})"
+          git push
