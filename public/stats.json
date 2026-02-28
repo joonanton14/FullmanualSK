@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-02-28T20:41:43.926Z",
+  "updatedAt": "2026-02-28T21:20:34.078Z",
   "rows": [
     {
       "name": "perttikeinonen69",
-      "games": 472,
-      "goals": 497,
-      "assists": 509,
-      "ga": 1006,
-      "gaPerMatch": 2.1313559322033897,
+      "games": 475,
+      "goals": 500,
+      "assists": 513,
+      "ga": 1013,
+      "gaPerMatch": 2.132631578947368,
       "source": "ea-paste"
     },
     {
@@ -21,11 +21,11 @@
     },
     {
       "name": "docwet14",
-      "games": 140,
-      "goals": 97,
-      "assists": 104,
-      "ga": 201,
-      "gaPerMatch": 1.4357142857142857,
+      "games": 143,
+      "goals": 101,
+      "assists": 107,
+      "ga": 208,
+      "gaPerMatch": 1.4545454545454546,
       "source": "ea-paste"
     },
     {
