@@ -1,22 +1,22 @@
 {
-  "updatedAt": "2026-05-31T09:17:14.658Z",
+  "updatedAt": "2026-06-13T19:33:53.393Z",
   "rows": [
     {
       "name": "perttikeinonen69",
-      "games": 500,
-      "goals": 526,
-      "assists": 551,
-      "ga": 1077,
-      "gaPerMatch": 2.154,
+      "games": 503,
+      "goals": 531,
+      "assists": 558,
+      "ga": 1089,
+      "gaPerMatch": 2.165009940357853,
       "source": "ea-paste"
     },
     {
       "name": "kilkutin",
-      "games": 467,
-      "goals": 582,
-      "assists": 422,
-      "ga": 1004,
-      "gaPerMatch": 2.1498929336188435,
+      "games": 470,
+      "goals": 590,
+      "assists": 426,
+      "ga": 1016,
+      "gaPerMatch": 2.1617021276595745,
       "source": "ea-paste"
     },
     {
